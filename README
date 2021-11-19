@@ -1,0 +1,54 @@
+This snakemake pipeline will run simulations for FEV1 decline modeling.  
+
+To understand the workflow, let's look at the snake file entitled sims.snp:
+
+TARGETS = [expand('sim_summary_snp{snpnum2}.csv',snpnum2=range(1,3)),]
+
+
+rule DONE:
+	input: TARGETS
+
+rule sims_iter_snp:
+	input: 'lungFx10kLong.csv.gz'
+	output: 'sim{iter}_snp{snpnum}_lmm.csv'
+	script: 'sims_snakemake.R'
+
+rule compile_results:	
+    input: expand('sim{iter}_snp{snpnum}_lmm.csv',iter=range(1,1001),snpnum=range(1,3))
+    output: 'sims_lmm_compiled.csv'
+    script: 'sims_compile.R'
+    
+rule summarise_results:
+    input: 'sims_lmm_compiled.csv'
+    output: 'sim_summary_snp{snpnum2}.csv'
+    script: 'summarise_sims.R'
+    
+    
+    
+The first rule is called "DONE", and it looks for output files in the string TARGET.  This tells snakemake to stop running when the files in TARGETS are found. In this case, the files are sim_summary_snp{snpnum2}.csv, where snpnum2 can have a value of 1 or 2.  In this pipeline, snp1 = snp_rd (rapid decline (1) vs normal decline (0)) and snp2 = snp_lb (low baseline (1) vs. normal baseline (0)).  
+
+The second rule is called "sims_iter_snp" which calls the script sims_snakemake.R. In this script, iterations are determined by set.seed(iter) which is defined prior to sampling from the simulated data; 'iter' ranges from 1 to 1000, and snpnum is 1 or 2 and is coded as described above. Each snp and iteration are parallelized, and 2000 jobs are submitted to the cluster. The main limitation is availability of nodes. This script then runs all LMM models and saves the output as sim{iter}_snp{snpnum}_lmm.csv.
+
+The third rule is called "compile_results" which calls the script sims_compile.R. This script reads in the outputs from the "sims_iter_snp" rule and compiles it into one large table called sims_lmm_compiled.csv.  
+
+The fourth rule called "summarise_results" which calls the script summarise_sims.R.  This script takes the sims_lmm_compiled output from the third rule and calculates summary statistics for each model. This process is parallelized and makes one new table for each snp, so there are two outputs named sim_summary_snp{snpnum2}.csv, with the same snp numbers as above.
+
+To run this pipeline, first ctivate the conda environment as below:
+
+screen 
+qrsh -l lx7
+cd snakedir [i.e. this directory]
+/bin/bash
+source /proj/relibs/relib00/conda/bin/activate
+conda activate sm5
+
+Then run this command as a dry run:
+snakemake --cluster "qsub -cwd -v PATH -l lx7 -S /bin/bash -o ./shelloutputs -e ./shelloutputs" --jobs 2500 --latency-wait 10800 -s sims.snp -n
+
+Once this command indicates it should work, run the same command without the -n.  This will submit your job. 
+
+After running the pipeline, if you want to move your results to another directory, use the following commands:
+mv *_lmm.csv newdir
+mv *compiled.csv newdir
+mv sim_summary*.csv newdir
+
