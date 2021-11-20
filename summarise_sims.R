@@ -22,9 +22,10 @@ if(snpnumber==1){
 
 # for(snpname in c("snp_rd","snp_lb")){
   
+sims <- sims %>% 
+  filter(snp==snpname) 
 
   simSum<-sims %>% 
-    filter(snp==snpname) %>% 
     dplyr::group_by(modelnum) %>% 
     summarise(avgAIC=mean(aic_qic,na.rm=T),
               minAIC=min(aic_qic,na.rm=T),
