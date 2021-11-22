@@ -1,5 +1,24 @@
 library(tidyverse)
 library(data.table)
+library(optparse)
+
+# option_list = list(
+#   make_option(c("-i", "--infile"), type = "character", default = NULL,
+#               help = "Path to file containing input data",
+#               metavar = "character"),
+#   make_option(c("-o", "--outfile"), type = "character", default = NULL,
+#               help = "Path to output file ", metavar = "character"),
+#   make_option(c("-r", "--chr_range"),type = "integer", default = NULL,
+#               help = " chromosomes", metavar = "number"),
+#   make_option(c("-p", "--phenovar"), type = "character", default = NULL,
+#               help = "Phenovar", metavar = "character"),
+#   make_option(c("-v", "--covariates"), type = "character", default = NULL,
+#               help = "Covariates", metavar = "character")
+# )
+# 
+# # parse arguments
+# opt_parser = OptionParser(option_list = option_list)
+# opt = parse_args(opt_parser)
 
 
 simPath<-"/proj/regeps/regep00/studies/COPDGene/analyses/remol/Fev1decline/sims/"
@@ -8,8 +27,9 @@ sims <- fread(paste0(simPath,"sims_lmm_compiled.csv"),data.table=F)
 
 # head(sims %>% filter(modelnum==1),20)
 
-snpnumber<-snakemake@wildcards[["snpnum2"]]
+snpnumber<-snakemake@wildcards[["snpid"]]
 print(snpnumber)
+# snpnumber<-opt$snpid
 
 
 if(snpnumber==1){

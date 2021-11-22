@@ -2,7 +2,7 @@ This snakemake pipeline will run simulations for FEV1 decline modeling.
 
 To understand the workflow, let's look at the snake file entitled sims.snp:
 
-TARGETS = [expand('sim_summary_snp{snpnum2}.csv',snpnum2=range(1,3)),]
+TARGETS = [expand('sim_summary_snp{snpid}.csv',snpid=config["snpid"]),]
 
 
 rule DONE:
@@ -10,17 +10,17 @@ rule DONE:
 
 rule sims_iter_snp:
 	input: 'lungFx10kLong.csv.gz'
-	output: 'sim{iter}_snp{snpnum}_lmm.csv'
+	output: 'sim{iter}_snp{snpid}_lmm.csv'
 	script: 'sims_snakemake.R'
 
 rule compile_results:	
-    input: expand('sim{iter}_snp{snpnum}_lmm.csv',iter=range(1,1001),snpnum=range(1,3))
+    input: expand('sim{iter}_snp{snpid}_lmm.csv',iter=range(1,config["numsims"]),snpid=config["snpid"])
     output: 'sims_lmm_compiled.csv'
     script: 'sims_compile.R'
     
 rule summarise_results:
     input: 'sims_lmm_compiled.csv'
-    output: 'sim_summary_snp{snpnum2}.csv'
+    output: 'sim_summary_snp{snpid}.csv'
     script: 'summarise_sims.R'
     
     
@@ -42,8 +42,11 @@ cd snakedir [i.e. this directory]
 source /proj/relibs/relib00/conda/bin/activate
 conda activate sm5
 
+To see the workflow:
+snakemake --forceall --rulegraph --configfile config.yaml | dot -Tpdf > dag.pdf
+
 Then run this command as a dry run:
-snakemake --cluster "qsub -cwd -v PATH -l lx7 -S /bin/bash -o ./shelloutputs -e ./shelloutputs" --jobs 2500 --latency-wait 10800 -s sims.snp -n
+snakemake --configfile config.yaml --cluster "qsub -cwd -v PATH -l lx7 -S /bin/bash -o ./shelloutputs -e ./shelloutputs" --jobs 2500 --latency-wait 10800 -s sims.snp -n
 
 Once this command indicates it should work, run the same command without the -n.  This will submit your job. 
 

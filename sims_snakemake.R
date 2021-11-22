@@ -17,7 +17,7 @@ dfsim<-fread(cmd=paste0("zcat ",simPath,"lungFx10kLong.csv.gz"),data.table=F)
 # load functions
 source(paste0(simPath,"simfunctions.R"))
 
-snpnumber<-snakemake@wildcards[["snpnum"]]
+snpnumber<-snakemake@wildcards[["snpid"]]
 print(snpnumber)
 
 
