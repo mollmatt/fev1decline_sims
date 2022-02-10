@@ -1,8 +1,14 @@
-"modelnum","iteration","formula","random_slope","interaction","snp","converged","pctConverged","beta","p","avgAIC","minAIC","pctBestAIC"
-1,572,"fev1~snp+age+age_c2+time+time*snp","time","snp:time","snp_lb",1,76.2,"-0.007 (-0.012 - -0.0018)",0.0085,26880.0204141024,25929.1600003337,0
-2,572,"fev1~snp+age+age_c2+time+time*snp","age","snp:time","snp_lb",1,99.2,"-0.0062 (-0.011 - -0.00096)",0.02,26694.1518524546,25656.6400916771,16
-3,572,"fev1~snp+age+age_c2+time+age*snp","age","snp:age","snp_lb",1,99.2,"-0.0038 (-0.0048 - -0.0028)",6.8e-13,26659.8572599712,25613.2313098406,83.9
-4,572,"fev1~snp+age+age_c2+time+age*snp","time","snp:age","snp_lb",1,75,"-0.0036 (-0.0046 - -0.0026)",6.7e-13,26843.8617237334,25887.7958220911,0.1
-5,572,"fev1~snp+age+age_c2+time+age*snp+time*snp","time","snp:age","snp_lb",1,74.4,"-0.0036 (-0.0047 - -0.0026)",2.3e-11,26854.3707575723,25899.6613933196,0
-5,572,"fev1~snp+age+age_c2+time+age*snp+time*snp","time","snp:time","snp_lb",1,74.4,"-0.00035 (-0.0059 - 0.0052)",0.9,26854.3707575723,25899.6613933196,0
-6,572,"fev1~snp+time+time*snp+age_baseline+age_c2_baseline","time","snp:time","snp_lb",1,91.4,"-0.0063 (-0.012 - -0.00094)",0.021,27187.3078736635,26250.2542505518,0
+"modelnum","iteration","formula","random_slope","predictor","snp","minAIC","avgbeta","avgP","pct_p0.05","avgAIC","pctConverged","pctBestAIC"
+1,356,"fev1~snp+age+age_c2+time+time*snp+fev1_baseline","time","snp","snp_lb",-284585.680474957,-0.0061,0.095,76,-231952.02,83,0
+1,356,"fev1~snp+age+age_c2+time+time*snp+fev1_baseline","time","snp:time","snp_lb",-284585.680474957,0.00079,0.12,71,-231952.02,83,0
+2,901,"fev1~snp+age+age_c2+time+time*snp+fev1_baseline","age","snp","snp_lb",-701780.934471075,0.0012,0.06,84,-673029.62,72,38.5
+2,901,"fev1~snp+age+age_c2+time+time*snp+fev1_baseline","age","snp:time","snp_lb",-701780.934471075,2.4e-05,0.091,77,-673029.62,72,38.5
+3,901,"fev1~snp+age+age_c2+time+age*snp+fev1_baseline","age","snp","snp_lb",-701818.655063143,-0.0026,0.068,82,-673069.14,72,61.5
+3,901,"fev1~snp+age+age_c2+time+age*snp+fev1_baseline","age","snp:age","snp_lb",-701818.655063143,7e-05,0.068,82,-673069.14,72,61.5
+4,356,"fev1~snp+age+age_c2+time+age*snp+fev1_baseline","time","snp","snp_lb",-287410.073581124,-0.22,0.0012,100,-236465.12,86,0
+4,356,"fev1~snp+age+age_c2+time+age*snp+fev1_baseline","time","snp:age","snp_lb",-287410.073581124,0.0038,8.3e-06,100,-236465.12,86,0
+5,356,"fev1~snp+age+age_c2+time+age*snp+time*snp+fev1_baseline","time","snp","snp_lb",-287402.606107053,-0.2,0.0016,99,-236492.42,84,0
+5,356,"fev1~snp+age+age_c2+time+age*snp+time*snp+fev1_baseline","time","snp:age","snp_lb",-287402.606107053,0.0038,2e-05,100,-236492.42,84,0
+5,356,"fev1~snp+age+age_c2+time+age*snp+time*snp+fev1_baseline","time","snp:time","snp_lb",-287402.606107053,-0.003,0.094,76,-236492.42,84,0
+6,356,"fev1~snp+time+time*snp+age_baseline+age_c2_baseline+fev1_baseline","time","snp","snp_lb",-284946.659097713,-0.0061,0.095,76,-232034.98,84,0
+6,356,"fev1~snp+time+time*snp+age_baseline+age_c2_baseline+fev1_baseline","time","snp:time","snp_lb",-284946.659097713,0.00079,0.12,70,-232034.98,84,0
